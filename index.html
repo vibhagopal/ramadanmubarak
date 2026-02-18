@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramadan Night Journey</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ⭐ Starfield canvas -->
+<canvas id="starfield"></canvas>
+
+<!-- Arabesque tile watermark -->
+<svg id="bg-pattern" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.055;" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="arabesque" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <polygon points="30,2 36,24 58,24 41,37 47,58 30,46 13,58 19,37 2,24 24,24" fill="none" stroke="#8b4513" stroke-width="0.9"/>
+      <circle cx="30" cy="30" r="5.5" fill="none" stroke="#c9993a" stroke-width="0.7"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#arabesque)"/>
+</svg>
+
+<!-- 🔊 Background audio -->
+<audio id="bg-audio" src="images/sounds.mp3"></audio>
+
+<div id="app">
+
+  <!-- ══════════════════════════════════════════
+       🌙 WELCOME SCREEN
+       ══════════════════════════════════════════ -->
+  <section class="screen active" id="welcome-screen">
+    <div class="welcome-moon">☽</div>
+    <div class="welcome-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+    <h1 class="welcome-arabic">رمضان مبارك</h1>
+    <p class="welcome-transliteration">Ramadan Mubarak</p>
+
+    <p class="welcome-desc">
+      A little night journey made with love 🏮<br/>
+      Light lanterns, prepare iftar, and count your blessings —<br/>
+      one peaceful moment at a time.
+    </p>
+
+    <button id="play-btn">
+      <span class="play-icon">▶</span>
+      Begin your journey
+    </button>
+
+    <p class="music-hint">🎵 Tap to begin — music will play</p>
+
+    <div class="welcome-ornament" style="margin-top: 16px;">✦ &nbsp; ✦ &nbsp; ✦</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       🏮 LANTERN SCREEN
+       ══════════════════════════════════════════ -->
+  <section class="screen" id="lantern-screen">
+    <h1>Hang the Lanterns</h1>
+    <p class="subtitle">Answer each question, then drag your lantern onto the string</p>
+
+    <div id="string-area">
+      <div id="string-line"></div>
+      <div class="hook" id="hook-0"></div>
+      <div class="hook" id="hook-1"></div>
+      <div class="hook" id="hook-2"></div>
+      <div class="hook" id="hook-3"></div>
+      <div class="hook" id="hook-4"></div>
+      <div class="hook" id="hook-5"></div>
+    </div>
+
+    <div id="quiz-panel" class="hidden">
+      <div id="quiz-category"></div>
+      <div id="quiz-question"></div>
+      <div id="quiz-options"></div>
+      <div id="quiz-feedback"></div>
+    </div>
+
+    <div id="lantern-tray">
+      <div class="tray-lantern locked" id="tl-0" data-index="0">🏮</div>
+      <div class="tray-lantern locked" id="tl-1" data-index="1">🏮</div>
+      <div class="tray-lantern locked" id="tl-2" data-index="2">🏮</div>
+      <div class="tray-lantern locked" id="tl-3" data-index="3">🏮</div>
+      <div class="tray-lantern locked" id="tl-4" data-index="4">🏮</div>
+      <div class="tray-lantern locked" id="tl-5" data-index="5">🏮</div>
+    </div>
+
+    <button id="start-quiz-btn">Begin ✦</button>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       🍽 IFTAR SCREEN
+       ══════════════════════════════════════════ -->
+  <section class="screen" id="iftar-screen">
+    <h1>Prepare Iftar</h1>
+    <img src="images/plate.png" class="plate" id="plate" />
+
+    <img src="images/date.png"          class="draggable food-item" style="top:18%; left:14%; width:80px;" />
+    <img src="images/naan.png"          class="draggable food-item" style="top:10%; left:22%; width:160px;" />
+    <img src="images/kunafeh_slice.png" class="draggable food-item" style="top:8%;  left:42%; width:115px;" />
+    <img src="images/chicken.png"       class="draggable food-item" style="top:10%; left:55%; width:150px;" />
+    <img src="images/date.png"          class="draggable food-item" style="top:2%;  left:72%; width:80px;" />
+    <img src="images/hummus.png"        class="draggable food-item" style="top:12%; left:78%; width:110px;" />
+    <img src="images/rice.png"          class="draggable food-item" style="top:28%; left:12%; width:120px;" />
+    <img src="images/samosa.png"        class="draggable food-item" style="top:25%; left:78%; width:100px;" />
+    <img src="images/halloumi.png"      class="draggable food-item" style="top:2%;  left:3%;  width:100px;" />
+    <img src="images/kunafeh_slice.png" class="draggable food-item" style="top:42%; left:10%; width:115px;" />
+    <img src="images/fruits.png"        class="draggable food-item" style="top:40%; left:80%; width:95px;" />
+    <img src="images/nuts.png"          class="draggable food-item" style="top:2%;  left:36%; width:65px;" />
+    <img src="images/zaatar.png"        class="draggable food-item" style="top:55%; left:80%; width:90px;" />
+    <img src="images/halloumi.png"      class="draggable food-item" style="top:55%; left:12%; width:100px;" />
+    <img src="images/tabouleh.png"      class="draggable food-item" style="top:68%; left:76%; width:150px;" />
+    <img src="images/chicken.png"       class="draggable food-item" style="top:68%; left:10%; width:150px;" />
+    <img src="images/naan.png"          class="draggable food-item" style="top:72%; left:62%; width:160px;" />
+    <img src="images/date.png"          class="draggable food-item" style="top:88%; left:28%; width:80px;" />
+    <img src="images/kunafeh_slice.png" class="draggable food-item" style="top:83%; left:38%; width:115px;" />
+    <img src="images/rice.png"          class="draggable food-item" style="top:75%; left:50%; width:120px;" />
+    <img src="images/maamoul.png"       class="draggable food-item" style="top:90%; left:18%; width:60px;" />
+    <img src="images/halloumi.png"      class="draggable food-item" style="top:78%; left:68%; width:100px;" />
+    <img src="images/samosa.png"        class="draggable food-item" style="top:70%; left:46%; width:100px;" />
+    <img src="images/kunafeh_slice.png" class="draggable food-item" style="top:30%; left:78%; width:115px;" />
+    <img src="images/chicken.png"       class="draggable food-item" style="top:35%; left:14%; width:150px;" />
+    <img src="images/maamoul.png"       class="draggable food-item" style="top:88%; left:54%; width:60px;" />
+    <img src="images/fruits.png"        class="draggable food-item" style="top:65%; left:24%; width:95px;" />
+    <img src="images/rice.png"          class="draggable food-item" style="top:60%; left:76%; width:120px;" />
+    <img src="images/kunafeh_slice.png" class="draggable food-item" style="top:18%; left:62%; width:115px;" />
+    <img src="images/kunafeh_slice.png" class="draggable food-item" style="top:2%;  left:48%; width:115px;" />
+    <img src="images/halloumi.png"      class="draggable food-item" style="top:90%; left:72%; width:100px;" />
+    <img src="images/date.png"          class="draggable food-item" style="top:88%; left:6%;  width:80px;" />
+
+    <button id="iftar-done">Finish Iftar ✦</button>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       📿 TASBIH SCREEN
+       ══════════════════════════════════════════ -->
+  <section class="screen" id="tasbih-screen">
+    <h1>Make Tasbih</h1>
+    <div class="counter" id="count">0 / 15</div>
+    <div id="necklace"></div>
+    <div id="tap-bead">📿</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       🎉 FINAL SCREEN
+       ══════════════════════════════════════════ -->
+  <section class="screen" id="final-screen">
+    <span class="moon-bg">☽</span>
+    <h1>✨ Ramadan Mubarak ✨</h1>
+    <p>Your peaceful night is complete 🌙</p>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
